@@ -144,6 +144,7 @@ createRestaurantHTML = (restaurant) => {
   li.append(image);
 
   const name = document.createElement('h1');
+  name.id = "restaurant"+restaurant.id;
   name.innerHTML = restaurant.name;
   li.append(name);
 
@@ -156,6 +157,7 @@ createRestaurantHTML = (restaurant) => {
   li.append(address);
 
   const more = document.createElement('a');
+  more.setAttribute("aria-labelledby",`restaurant${restaurant.id}`);
   more.innerHTML = 'View Details';
   more.href = DBHelper.urlForRestaurant(restaurant);
   li.append(more)

@@ -178,3 +178,18 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     self.markers.push(marker);
   });
 }
+
+/*
+* Add aria-role for map
+* */
+
+window.onload =  () => {
+
+    const ariaRole = document.getElementById("map");
+    console.log(ariaRole);
+// ariaRole.setAttribute("role","presentation");
+    ariaRole.setAttribute("aria-hidden", "true");
+
+    const buttons = document.querySelectorAll("#map button");
+    console.log(buttons);
+};

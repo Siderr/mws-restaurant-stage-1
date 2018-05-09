@@ -187,10 +187,6 @@ addMarkersToMap = (restaurants = self.restaurants) => {
 window.onload =  () => {
 
     const ariaRole = document.getElementById("map");
-    console.log(ariaRole);
-// ariaRole.setAttribute("role","presentation");
     ariaRole.setAttribute("aria-hidden", "true");
 
-    const buttons = document.querySelectorAll("#map button");
-    console.log(buttons);
 };

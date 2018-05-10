@@ -1,7 +1,10 @@
 @charset "utf-8";
 /* CSS Document */
 
-body, td, th, p {
+body,
+td,
+th,
+p {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
     color: #333;
@@ -14,7 +17,8 @@ body {
     position: relative;
 }
 
-ul, li {
+ul,
+li {
     font-family: Arial, Helvetica, sans-serif;
     font-size: 10pt;
     color: #333;
@@ -25,7 +29,8 @@ a {
     text-decoration: none;
 }
 
-a:hover, a:focus {
+a:hover,
+a:focus {
     color: #3397db;
     text-decoration: none;
 }
@@ -34,16 +39,33 @@ a img {
     border: none 0 #fff;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
     font-family: Arial, Helvetica, sans-serif;
     margin: 0 0 20px;
 }
 
-article, aside, canvas, details, figcaption, figure, footer, header, hgroup, menu, nav, section {
+article,
+aside,
+canvas,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
     display: block;
 }
 
-#maincontent, .inside #maincontent {
+#maincontent,
+.inside #maincontent {
     background-color: #f3f3f3;
     min-height: 100%;
     min-width: 100%;
@@ -129,7 +151,7 @@ nav h1 a {
 /* ====================== Restaurant Filtering ====================== */
 .filter-options {
     width: 100%;
-    background-color: #3397DB;
+    background-color: #3397db;
     align-items: center;
 }
 
@@ -276,7 +298,8 @@ nav h1 a {
     width: 100%;
 }
 
-#restaurant-container, #reviews-container {
+#restaurant-container,
+#reviews-container {
     border-bottom: 1px solid #d9d9d9;
     border-top: 1px solid #fff;
     padding: 40px 40px 30px;
@@ -334,8 +357,8 @@ nav h1 a {
 }
 
 #reviews-list li p:nth-child(3) {
-    background-color: #FFA500;
-    color: #FFFFFF;
+    background-color: #ffa500;
+    color: #ffffff;
     border-radius: 5px;
     margin-left: 20px;
     padding: 5px 10px;
@@ -374,6 +397,9 @@ nav h1 a {
     white-space: nowrap;
 }
 
+/*
+    Breakpoint for 400px - 768px devices
+*/
 @media screen AND (min-width: 400px) AND (max-width: 768px) {
     nav h1 a {
         letter-spacing: 3px;
@@ -394,6 +420,9 @@ nav h1 a {
     }
 }
 
+/*
+    Breakpoint for 768px - 1024px devices
+*/
 @media screen AND (min-width: 769px) AND (max-width: 1024px) {
     .inside #maincontent {
         width: 768px;
@@ -423,13 +452,21 @@ nav h1 a {
     }
 }
 
-@media screen AND (min-width: 1024px) AND (max-width: 1920px) {
-    .inside, .inside header, .inside #footer, header, body {
+/*
+    Breakpoint for 1025px - 1920px devices
+*/
+@media screen AND (min-width: 1025px) AND (max-width: 1920px) {
+    .inside,
+    .inside header,
+    .inside #footer,
+    header,
+    body {
         width: 960px;
         margin: auto;
     }
 
-    .inside, body {
+    .inside,
+    body {
         background-color: #f3f3f3;
     }
 
@@ -450,7 +487,7 @@ nav h1 a {
         font-size: 1.2em;
     }
 
-    .inside #footer{
+    .inside #footer {
         padding: 10px 0;
     }
 }

@@ -1,6 +1,3 @@
-/**
- * Created by tadas on 2018-05-02.
- */
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
         navigator.serviceWorker.register('/sw.js', {scope: './'}).then(function(registration) {

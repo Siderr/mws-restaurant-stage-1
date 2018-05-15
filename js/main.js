@@ -1,9 +1,8 @@
 let restaurants,
     neighborhoods,
-    cuisines
-var map
-var markers = []
-
+    cuisines;
+var map;
+var markers = [];
 /**
  * Fetch neighborhoods and cuisines as soon as the page is loaded.
  */
@@ -141,6 +140,7 @@ createRestaurantHTML = (restaurant) => {
     const image = document.createElement('img');
     image.className = 'restaurant-img';
     image.src = DBHelper.imageUrlForRestaurant(restaurant);
+    image.setAttribute('srcset', formatSrcSet(image.src));
     image.alt = restaurant.name;
     li.append(image);
 
@@ -190,3 +190,8 @@ window.onload = () => {
     ariaRole.setAttribute('aria-hidden', 'true');
 
 };
+
+formatSrcSet = (string) => {
+    let smallImg = `${string.substr(0,string.lastIndexOf('.'))}-400_small.jpg`;
+    return srcSet = `${smallImg} 500w, ${string}`;
+}

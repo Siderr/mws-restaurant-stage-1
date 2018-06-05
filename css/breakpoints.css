@@ -1,0 +1,94 @@
+/*
+    Breakpoint for 400px - 768px devices
+*/
+@media screen AND (min-width: 400px) AND (max-width: 768px) {
+    nav h1 a {
+        letter-spacing: 3px;
+        font-weight: 100;
+        font-size: 1.4em;
+    }
+
+    #breadcrumb li {
+        font-size: 1.4em;
+    }
+
+    #footer p {
+        font-size: 1em;
+    }
+
+    .inside #map-container {
+        height: 300px;
+    }
+}
+
+/*
+    Breakpoint for 768px - 1024px devices
+*/
+@media screen AND (min-width: 769px) AND (max-width: 1024px) {
+    .inside #maincontent {
+        width: 768px;
+        margin: auto;
+    }
+
+    nav h1 a {
+        letter-spacing: 5px;
+        font-weight: 100;
+        font-size: 1.6em;
+    }
+
+    #breadcrumb li {
+        font-size: 1.6em;
+    }
+
+    #footer p {
+        font-size: 1.2em;
+    }
+
+    .inside #map-container {
+        height: 350px;
+    }
+
+    #reviews-list {
+        padding-bottom: 5%;
+    }
+}
+
+/*
+    Breakpoint for 1025px - 1920px devices
+*/
+@media screen AND (min-width: 1025px) AND (max-width: 1920px) {
+    .inside,
+    .inside header,
+    .inside #footer,
+    header,
+    body {
+        width: 960px;
+        margin: auto;
+    }
+
+    .inside,
+    body {
+        background-color: #f3f3f3;
+    }
+
+    #reviews-list {
+        padding-bottom: 3%;
+    }
+
+    #restaurant-address {
+        font-size: 1.4em;
+        font-weight: bold;
+    }
+
+    #restaurant-hours tr td {
+        font-size: 1.4em;
+    }
+
+    p {
+        font-size: 1.2em;
+    }
+
+    .inside #footer {
+        padding: 10px 0;
+    }
+}

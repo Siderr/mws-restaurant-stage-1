@@ -36,7 +36,6 @@ class DBHelper {
                 xhr.send();
             }
         });
-        debugger;
     }
 
     /**

@@ -163,6 +163,19 @@ createRestaurantHTML = (restaurant) => {
     more.href = DBHelper.urlForRestaurant(restaurant);
     li.append(more);
 
+    const icon = document.createElement('icon');
+    icon.style.float = 'right';
+    icon.classList.add('fa-star');
+    icon.classList.add('fa-3x');
+    console.log(restaurant.is_favorite);
+    if(restaurant.is_favorite == 'true'){
+        icon.classList.add('fas');
+    } else {
+        icon.classList.add('far');
+    }
+    icon.addEventListener('click', function() {DBHelper.toggleFavoriteRestaurant(restaurant,event)});
+    li.append(icon);
+
     return li
 }
 
@@ -180,6 +193,8 @@ addMarkersToMap = (restaurants = self.restaurants) => {
     });
 };
 
+
+
 /*
  * Add aria-hidden for map
  * */
@@ -194,4 +209,4 @@ window.onload = () => {
 formatSrcSet = (string) => {
     let smallImg = `${string.substr(0,string.lastIndexOf('.'))}-400_small.jpg`;
     return srcSet = `${smallImg} 500w, ${string}`;
-}
+};

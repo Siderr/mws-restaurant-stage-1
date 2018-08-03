@@ -205,6 +205,10 @@ nav h1 a {
     width: 80%;
 }
 
+.fas {
+    color: orange;
+}
+
 #restaurants-list .restaurant-img {
     background-color: #ccc;
     display: block;

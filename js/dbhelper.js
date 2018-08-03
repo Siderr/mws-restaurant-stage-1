@@ -111,6 +111,44 @@ class DBHelper {
     }
 
     /**
+     * Fetch favorite restaurants
+     */
+    static fetchFavoriteRestaurants() {
+        return fetch('http://localhost:1337/restaurants/?is_favorite=true', {}).then(function (response) {
+            return response.json();
+        })
+    }
+
+    /**
+     * Toggle favorite restaurants
+     * Makes PUT request to API, then changes classes for style changes and finally updates IndexDB.
+     */
+    static toggleFavoriteRestaurant(restaurant, event) {
+        let _self = this;
+        let icon = event.target;
+        let favorites = this.fetchFavoriteRestaurants()
+            .then(data => {
+                if (data.filter(el => el.name == restaurant.name).length > 0) {
+                    fetch(`http://localhost:1337/restaurants/${restaurant.id}/?is_favorite=false`, {
+                        method: 'PUT'
+                    }).then(function () {
+                        icon.classList.remove('fas');
+                        icon.classList.add('far');
+                        _self.toogleLocalFavorite(restaurant.id);
+                    });
+                } else {
+                    fetch(`http://localhost:1337/restaurants/${restaurant.id}/?is_favorite=true`, {
+                        method: 'PUT'
+                    }).then(function () {
+                        icon.classList.remove('far');
+                        icon.classList.add('fas');
+                        _self.toogleLocalFavorite(restaurant.id);
+                    });
+                }
+            });
+    }
+
+    /**
      * Fetch all neighborhoods with proper error handling.
      */
     static fetchNeighborhoods(callback) {
@@ -205,11 +243,22 @@ class DBHelper {
 
 //    Get restaurant by ID from indexDB
     static getRestaurants(id) {
-        dbPromise.then(db => {
+        return dbPromise.then(db => {
             return db.transaction('restaurant')
                 .objectStore('restaurant').get(id);
-        }).then(obj => console.log(obj));
+        });
     }
 
-
+//    Toggle indexDB is_updated property.
+    static toogleLocalFavorite(id) {
+        this.getRestaurants(id).then(data => {
+            let toggled = Object.assign({}, data);
+            if (toggled.is_favorite === 'true') {
+                toggled.is_favorite = "false";
+            } else {
+                toggled.is_favorite = "true";
+            }
+            this.addRestaurant(toggled);
+        });
+    }
 }

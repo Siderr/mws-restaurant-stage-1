@@ -104,6 +104,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
         const noReviews = document.createElement('p');
         noReviews.innerHTML = 'No reviews yet!';
         container.appendChild(noReviews);
+        createReviewFormHTML();
         return;
     }
     const ul = document.getElementById('reviews-list');
@@ -111,6 +112,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
         ul.appendChild(createReviewHTML(review));
     });
     container.appendChild(ul);
+    createReviewFormHTML();
 }
 
 /**
@@ -123,7 +125,8 @@ createReviewHTML = (review) => {
     li.appendChild(name);
 
     const date = document.createElement('p');
-    date.innerHTML = review.date;
+    let time = new Date(review.createdAt);
+    date.innerHTML = time.toDateString();
     li.appendChild(date);
 
     const rating = document.createElement('p');
@@ -135,6 +138,77 @@ createReviewHTML = (review) => {
     li.appendChild(comments);
 
     return li;
+}
+
+/*
+* Create HTML for the form.
+* */
+
+createReviewFormHTML = () => {
+    let reviews = document.querySelector('#reviews-list');
+    let id = getParameterByName('id');
+    const form = document.createElement('form');
+    form.classList.add('review-form');
+
+    let reviewFormHeader = document.createElement('h2');
+    reviewFormHeader.innerText = 'Add new comment';
+    form.append(reviewFormHeader);
+
+    let idInput = document.createElement('input');
+    idInput.type = 'hidden';
+    idInput.value = id;
+    form.append(idInput);
+
+    let nameLabel = document.createElement('label');
+    nameLabel.for = 'name';
+    nameLabel.innerText = 'Name';
+    form.append(nameLabel);
+
+    let name = document.createElement('input');
+    name.type = 'text';
+    name.name = 'name';
+    name.id = 'name';
+    name.placeholder = 'Enter your name';
+    name.required = true;
+    form.append(name);
+
+    let ratingLabel = document.createElement('label');
+    ratingLabel.for = 'rating';
+    ratingLabel.innerText = 'Rating';
+    form.append(ratingLabel);
+
+    let rating = document.createElement('input');
+    rating.type = 'number';
+    rating.name = 'rating';
+    rating.id = 'rating';
+    rating.placeholder = 'Rating';
+    rating.required = true;
+    rating.min = 1;
+    rating.max = 10;
+    form.append(rating);
+
+    let commentLabel = document.createElement('label');
+    commentLabel.for = 'comments';
+    commentLabel.innerText = 'Comment';
+    form.append(commentLabel);
+
+    let comments = document.createElement('textarea');
+    comments.name = 'comments';
+    comments.id = 'comments';
+    comments.placeholder = 'Enter your comment';
+    comments.rows = 4;
+    comments.cols = 50;
+    comments.required = true;
+    form.append(comments);
+
+    let submit = document.createElement('input');
+    submit.classList.add('button');
+    submit.type = 'submit';
+    submit.value = "Submit";
+    submit.addEventListener('click', function() { DBHelper.addComment(event)});
+    form.append(submit);
+
+    reviews.parentElement.appendChild(form);
 }
 
 /**

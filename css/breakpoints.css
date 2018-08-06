@@ -91,4 +91,17 @@
     .inside #footer {
         padding: 10px 0;
     }
+
+    .review-form {
+        margin-bottom: 3%;
+    }
+}
+
+/*
+    Breakpoint for up to 399px devices
+*/
+@media screen AND (max-width: 399px) {
+    #footer {
+        padding: 0 25px;
+    }
 }

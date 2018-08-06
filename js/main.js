@@ -167,7 +167,6 @@ createRestaurantHTML = (restaurant) => {
     icon.style.float = 'right';
     icon.classList.add('fa-star');
     icon.classList.add('fa-3x');
-    console.log(restaurant.is_favorite);
     if(restaurant.is_favorite == 'true'){
         icon.classList.add('fas');
     } else {
@@ -176,7 +175,7 @@ createRestaurantHTML = (restaurant) => {
     icon.addEventListener('click', function() {DBHelper.toggleFavoriteRestaurant(restaurant,event)});
     li.append(icon);
 
-    return li
+    return li;
 }
 
 /**

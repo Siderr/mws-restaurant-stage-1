@@ -213,15 +213,27 @@ class DBHelper {
         return marker;
     }
 
+    // Fetch all reviews
+    static fetchReviews() {
+        return fetch(`http://localhost:1337/reviews/`).then((response) => {
+            return response.json();
+        }).then(data => {
+            return data;
+        })
+    }
+
 //  Add all restaurants to indexDB
     static addRestaurants(restaurants) {
-        dbPromise.then(db => {
-            const tx = db.transaction('restaurant', 'readwrite');
-            for (let el of restaurants) {
-                tx.objectStore('restaurant').put(el);
-            }
-            return tx.complete;
-        });
+        this.fetchReviews().then(function (reviews) {
+            dbPromise.then(db => {
+                const tx = db.transaction('restaurant', 'readwrite');
+                for (let el of restaurants) {
+                    el.reviews = reviews.filter(r => r.restaurant_id === el.id);
+                    tx.objectStore('restaurant').put(el);
+                }
+                return tx.complete;
+            });
+        })
     }
 
 // Add restaurant to indexDB
@@ -260,5 +272,28 @@ class DBHelper {
             }
             this.addRestaurant(toggled);
         });
+    }
+
+    static addComment(event) {
+        event.preventDefault();
+        let formEvent = event.target;
+        let commentParams = {};
+        commentParams.restaurant_id = formEvent.form[0].value;
+        commentParams.name = formEvent.form[1].value;
+        commentParams.rating = formEvent.form[2].value;
+        commentParams.comments = formEvent.form[3].value;
+
+
+        fetch('http://localhost:1337/reviews/', {
+            method: 'POST',
+            body: JSON.stringify(commentParams)
+        }).then(res => res.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => {
+                console.log('Success:', response);
+                formEvent.form[1].value = '';
+                formEvent.form[2].value = '';
+                formEvent.form[3].value = '';
+            });
     }
 }

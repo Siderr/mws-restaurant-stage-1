@@ -205,10 +205,6 @@ nav h1 a {
     width: 80%;
 }
 
-.fas {
-    color: orange;
-}
-
 #restaurants-list .restaurant-img {
     background-color: #ccc;
     display: block;
@@ -405,13 +401,14 @@ nav h1 a {
 }
 
 /* ======================Review form======================= */
+
 .review-form {
     display: flex;
     flex-direction: column;
     margin-bottom: 10%;
 }
 
-.review-form input, .review-form textarea{
+.review-form input, .review-form textarea {
     margin-bottom: 1%;
 }
 
@@ -421,4 +418,19 @@ nav h1 a {
 
 .review-form label {
     font-weight: bold;
+}
+
+/* =================Favorite symbols ==================================================*/
+
+.star-fav:before {
+    content: "\2605";
+    color: orange;
+}
+
+.star:before {
+    content: "\2606";
+}
+
+.star , .star-fav {
+    font-size: 3em;
 }

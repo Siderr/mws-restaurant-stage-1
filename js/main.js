@@ -165,12 +165,10 @@ createRestaurantHTML = (restaurant) => {
 
     const icon = document.createElement('icon');
     icon.style.float = 'right';
-    icon.classList.add('fa-star');
-    icon.classList.add('fa-3x');
     if(restaurant.is_favorite == 'true'){
-        icon.classList.add('fas');
+        icon.classList.add('star-fav');
     } else {
-        icon.classList.add('far');
+        icon.classList.add('star');
     }
     icon.addEventListener('click', function() {DBHelper.toggleFavoriteRestaurant(restaurant,event)});
     li.append(icon);

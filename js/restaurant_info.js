@@ -115,6 +115,15 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
     createReviewFormHTML();
 }
 
+/*
+* Add a review to HTML
+* */
+addReview = (review) => {
+    const ul = document.getElementById('reviews-list');
+        ul.appendChild(createReviewHTML(review));
+}
+
+
 /**
  * Create review HTML and add it to the webpage.
  */
@@ -160,6 +169,7 @@ createReviewFormHTML = () => {
     form.append(idInput);
 
     let nameLabel = document.createElement('label');
+    nameLabel.id = 'nameLabel';
     nameLabel.for = 'name';
     nameLabel.innerText = 'Name';
     form.append(nameLabel);
@@ -170,9 +180,11 @@ createReviewFormHTML = () => {
     name.id = 'name';
     name.placeholder = 'Enter your name';
     name.required = true;
+    name.setAttribute('aria-labelledby', `nameLabel`);
     form.append(name);
 
     let ratingLabel = document.createElement('label');
+    ratingLabel.id = 'ratingLabel';
     ratingLabel.for = 'rating';
     ratingLabel.innerText = 'Rating';
     form.append(ratingLabel);
@@ -185,9 +197,11 @@ createReviewFormHTML = () => {
     rating.required = true;
     rating.min = 1;
     rating.max = 10;
+    rating.setAttribute('aria-labelledby', `ratingLabel`);
     form.append(rating);
 
     let commentLabel = document.createElement('label');
+    commentLabel.id = 'commentsLabel';
     commentLabel.for = 'comments';
     commentLabel.innerText = 'Comment';
     form.append(commentLabel);
@@ -199,13 +213,14 @@ createReviewFormHTML = () => {
     comments.rows = 4;
     comments.cols = 50;
     comments.required = true;
+    comments.setAttribute('aria-labelledby', `commentsLabel`);
     form.append(comments);
 
     let submit = document.createElement('input');
     submit.classList.add('button');
     submit.type = 'submit';
     submit.value = "Submit";
-    submit.addEventListener('click', function() { DBHelper.addComment(event)});
+    submit.addEventListener('click', function() { DBHelper.addReview(event)});
     form.append(submit);
 
     reviews.parentElement.appendChild(form);

@@ -132,16 +132,16 @@ class DBHelper {
                     fetch(`http://localhost:1337/restaurants/${restaurant.id}/?is_favorite=false`, {
                         method: 'PUT'
                     }).then(function () {
-                        icon.classList.remove('fas');
-                        icon.classList.add('far');
+                        icon.classList.remove('star-fav');
+                        icon.classList.add('star');
                         _self.toogleLocalFavorite(restaurant.id);
                     });
                 } else {
                     fetch(`http://localhost:1337/restaurants/${restaurant.id}/?is_favorite=true`, {
                         method: 'PUT'
                     }).then(function () {
-                        icon.classList.remove('far');
-                        icon.classList.add('fas');
+                        icon.classList.remove('star');
+                        icon.classList.add('star-fav');
                         _self.toogleLocalFavorite(restaurant.id);
                     });
                 }
@@ -195,7 +195,7 @@ class DBHelper {
      * Restaurant image URL.
      */
     static imageUrlForRestaurant(restaurant) {
-        return (`/img/${restaurant.photograph}.jpg`);
+        return (`/img/${restaurant.photograph}.webp`);
     }
 
     /**
@@ -222,18 +222,24 @@ class DBHelper {
         })
     }
 
+    // Fetch all reviews by restaurant id
+    static fetchReviewsById(restaurant_id) {
+        return fetch(`http://localhost:1337/reviews/?restaurant_id=${restaurant_id}`).then((response) => {
+            return response.json();
+        }).then(data => {
+            return data;
+        })
+    }
+
 //  Add all restaurants to indexDB
     static addRestaurants(restaurants) {
-        this.fetchReviews().then(function (reviews) {
-            dbPromise.then(db => {
-                const tx = db.transaction('restaurant', 'readwrite');
-                for (let el of restaurants) {
-                    el.reviews = reviews.filter(r => r.restaurant_id === el.id);
-                    tx.objectStore('restaurant').put(el);
-                }
-                return tx.complete;
-            });
-        })
+        let self = this;
+        for (let el of restaurants) {
+            self.fetchReviewsById(el.id).then((reviews) => {
+                el.reviews = reviews;
+                this.addRestaurant(el);
+            })
+        }
     }
 
 // Add restaurant to indexDB
@@ -245,6 +251,16 @@ class DBHelper {
         });
     }
 
+// Add review to indexDB
+    static addLocalReview(review) {
+        dbPromise.then(db => {
+            const tx = db.transaction('review', 'readwrite');
+            tx.objectStore('review').put(review);
+            return tx.complete;
+        });
+    }
+
+
 //    Get all restaurants from indexDB
     static getAllRestaurants() {
         return dbPromise.then(db => {
@@ -253,13 +269,54 @@ class DBHelper {
         })
     }
 
+
+//    Get all reviews from indexDB
+    static getAllLocalReviews() {
+        console.log('Trying to fetch local reviews.');
+        return dbPromise.then(db => {
+            return db.transaction('review')
+                .objectStore('review').getAll();
+        })
+    }
+
+    // Delete a indexDB review
+    static deleteLocalReview(id) {
+        return dbPromise.then(db => {
+            return db.transaction('review', 'readwrite')
+                .objectStore('review').delete(id);
+        })
+    }
+
+    // Delete all indexDB reviews
+    static deleteAllLocalReviews() {
+        return dbPromise.then(db => {
+            return db.transaction('review', 'readwrite')
+                .objectStore('review').clear();
+        })
+    }
+
 //    Get restaurant by ID from indexDB
     static getRestaurants(id) {
         return dbPromise.then(db => {
             return db.transaction('restaurant')
-                .objectStore('restaurant').get(id);
-        });
+                .objectStore('restaurant').get(parseInt(id));
+        })
     }
+
+
+    //    Get restaurant by ID from indexDB
+    static updateRestaurant(id, review) {
+        console.log(id, review);
+        dbPromise.then(async db => {
+            const tx = db.transaction('restaurant', 'readwrite');
+            const store = tx.objectStore('restaurant');
+            const val = await store.get(parseInt(id));
+            val.reviews.push(review);
+            store.put(val);
+            return tx.complete;
+        })
+    }
+
 
 //    Toggle indexDB is_updated property.
     static toogleLocalFavorite(id) {
@@ -274,26 +331,60 @@ class DBHelper {
         });
     }
 
-    static addComment(event) {
-        event.preventDefault();
-        let formEvent = event.target;
-        let commentParams = {};
-        commentParams.restaurant_id = formEvent.form[0].value;
-        commentParams.name = formEvent.form[1].value;
-        commentParams.rating = formEvent.form[2].value;
-        commentParams.comments = formEvent.form[3].value;
 
+    static resetForm(event) {
+        event.form[1].value = '';
+        event.form[2].value = '';
+        event.form[3].value = '';
+    }
 
-        fetch('http://localhost:1337/reviews/', {
+    static addReview(event, review) {
+        let reviewParams = {};
+        let formEvent;
+        if (event) {
+            event.preventDefault();
+            formEvent = event.target;
+            reviewParams.restaurant_id = formEvent.form[0].value;
+            reviewParams.name = formEvent.form[1].value;
+            reviewParams.rating = formEvent.form[2].value;
+            reviewParams.comments = formEvent.form[3].value;
+        } else {
+            reviewParams = review;
+        }
+
+        return fetch('http://localhost:1337/reviews/', {
             method: 'POST',
-            body: JSON.stringify(commentParams)
+            body: JSON.stringify(reviewParams)
         }).then(res => res.json())
-            .catch(error => console.error('Error:', error))
+            .catch(error => {
+                console.error('Error:', error);
+                this.addLocalReview(reviewParams);
+                event ? this.resetForm(formEvent) : '';
+            })
             .then(response => {
-                console.log('Success:', response);
-                formEvent.form[1].value = '';
-                formEvent.form[2].value = '';
-                formEvent.form[3].value = '';
+                if (response !== undefined) {
+                    console.log('Success:', response);
+                    console.log(reviewParams.restaurant_id);
+                    this.updateRestaurant(reviewParams.restaurant_id, reviewParams);
+                }
+                event ? this.resetForm(formEvent) : '';
             });
+    }
+
+
+    static uploadReviews() {
+        let self = this;
+        this.getAllLocalReviews().then(data => {
+            if (data.length > 0) {
+                console.log(data);
+                Promise.all(data.map(function (review) {
+                        self.addReview(null, review);
+                    })
+                ).then(function () {
+                    console.log('fired.');
+                    self.deleteAllLocalReviews();
+                }).catch(err => console.log('Error:', err))
+            }
+        })
     }
 }

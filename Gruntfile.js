@@ -1,26 +1,21 @@
-module.exports = function(grunt) {
+module.exports = function (grunt) {
     grunt.initConfig({
-        responsive_images: {
-            dev: {
+        cwebp: {
+            dynamic: {
                 options: {
-                    engine: 'im',
-                    sizes: [{
-                        width: 400,
-                        suffix: '_small',
-                        quality: 50
-                    }]
+                    q: 50
                 },
                 files: [{
                     expand: true,
-                    src: ['*.{gif,jpg,png}'],
                     cwd: 'img/',
+                    src: ['**/*.{png,jpg,gif}'],
                     dest: 'img/'
                 }]
             }
-        },
+        }
     });
 
-    grunt.loadNpmTasks('grunt-responsive-images');
-    grunt.registerTask('default', ['responsive_images']);
+    grunt.loadNpmTasks('grunt-cwebp');
+    grunt.registerTask('default', ['cwebp']);
 
 };

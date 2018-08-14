@@ -7,6 +7,9 @@ const urlsToCache = [
     '/css'
 ];
 
+self.importScripts('/js/dbhelper.js', 'node_modules/idb/lib/idb.js');
+const dbPromise = idb.open('rrpwa', 1);
+
 self.addEventListener('install', function (event) {
     // Perform install steps
     console.log('trying to install');
@@ -64,3 +67,11 @@ self.addEventListener('activate', function (event) {
         })
     );
 });
+
+self.addEventListener('sync', function (event) {
+   if (event.tag == 'commentsSync') {
+        console.log("Suveikiau, nes man taip net geriau");
+        DBHelper.uploadReviews();
+    }
+});
+

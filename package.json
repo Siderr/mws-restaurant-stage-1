@@ -1,0 +1,25 @@
+{
+  "name": "mws-restaurant-stage-1",
+  "version": "1.0.0",
+  "description": "final submit for stage three",
+  "main": "index.html",
+  "dependencies": {
+    "grunt": "^1.0.3",
+    "grunt-cwebp": "^2.1.1",
+    "idb": "^2.1.3"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Siderr/mws-restaurant-stage-1.git"
+  },
+  "author": "Tadas Bitkevicius",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Siderr/mws-restaurant-stage-1/issues"
+  },
+  "homepage": "https://github.com/Siderr/mws-restaurant-stage-1#readme"
+}

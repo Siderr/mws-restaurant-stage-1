@@ -306,7 +306,6 @@ class DBHelper {
 
     //    Get restaurant by ID from indexDB
     static updateRestaurant(id, review) {
-        console.log(id, review);
         dbPromise.then(async db => {
             const tx = db.transaction('restaurant', 'readwrite');
             const store = tx.objectStore('restaurant');
@@ -364,8 +363,7 @@ class DBHelper {
             .then(response => {
                 if (response !== undefined) {
                     console.log('Success:', response);
-                    console.log(reviewParams.restaurant_id);
-                    this.updateRestaurant(reviewParams.restaurant_id, reviewParams);
+                    this.updateRestaurant(reviewParams.restaurant_id, response);
                 }
                 event ? this.resetForm(formEvent) : '';
             });

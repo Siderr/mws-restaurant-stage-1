@@ -364,6 +364,7 @@ class DBHelper {
                 if (response !== undefined) {
                     console.log('Success:', response);
                     this.updateRestaurant(reviewParams.restaurant_id, response);
+                    addReview(response);
                 }
                 event ? this.resetForm(formEvent) : '';
             });
@@ -385,4 +386,38 @@ class DBHelper {
             }
         })
     }
+}
+
+/*
+* Add a review to HTML
+* */
+addReview = (review) => {
+    const ul = document.getElementById('reviews-list');
+    ul.appendChild(createReviewHTML(review));
+}
+
+
+/**
+ * Create review HTML and add it to the webpage.
+ */
+createReviewHTML = (review) => {
+    const li = document.createElement('li');
+    const name = document.createElement('p');
+    name.innerHTML = review.name;
+    li.appendChild(name);
+
+    const date = document.createElement('p');
+    let time = new Date(review.createdAt);
+    date.innerHTML = time.toDateString();
+    li.appendChild(date);
+
+    const rating = document.createElement('p');
+    rating.innerHTML = `Rating: ${review.rating}`;
+    li.appendChild(rating);
+
+    const comments = document.createElement('p');
+    comments.innerHTML = review.comments;
+    li.appendChild(comments);
+
+    return li;
 }

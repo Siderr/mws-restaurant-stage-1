@@ -24,6 +24,7 @@ window.initMap = () => {
  * Get current restaurant from page URL.
  */
 fetchRestaurantFromURL = (callback) => {
+    console.log(window.location.href);
     if (self.restaurant) { // restaurant already fetched!
         callback(null, self.restaurant)
         return;
@@ -120,7 +121,7 @@ fillReviewsHTML = (reviews = self.restaurant.reviews) => {
 * */
 addReview = (review) => {
     const ul = document.getElementById('reviews-list');
-        ul.appendChild(createReviewHTML(review));
+    ul.appendChild(createReviewHTML(review));
 }
 
 

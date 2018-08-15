@@ -24,7 +24,7 @@ self.addEventListener('install', function (event) {
 
 self.addEventListener('fetch', function (event) {
     event.respondWith(
-        caches.match(event.request)
+        caches.match(event.request, {ignoreSearch: true})
             .then(function (response) {
                 // Cache hit - return response
                 if (response) {
@@ -70,7 +70,6 @@ self.addEventListener('activate', function (event) {
 
 self.addEventListener('sync', function (event) {
    if (event.tag == 'commentsSync') {
-        console.log("Suveikiau, nes man taip net geriau");
         DBHelper.uploadReviews();
     }
 });
